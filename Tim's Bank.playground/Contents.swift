@@ -223,13 +223,13 @@ tunji.openAccount(account: accountType.savings)
 kunle.openAccount(account: accountType.current)
 kunle.openAccount(account: accountType.savings)
 
-var timAccount = tim.account![0]
-var timAccount2 = tim.account![1]
-var tunjiAccount = tunji.account![0]
-var kunleAccount = kunle.account![0]
-var kunleSecondAccount = kunle.account![1]
+var timAccount = tim.account?[0]
+var timAccount2 = tim.account?[1]
+var tunjiAccount = tunji.account?[0]
+var kunleAccount = kunle.account?[0]
+var kunleSecondAccount = kunle.account?[1]
 
-timAccount2.interestRate
+
 
 tim.account?[0].id
 tim.account?[1].id
@@ -237,14 +237,14 @@ tunji.account?[0].id
 kunle.account?[0].id
 kunle.account?[1].id
 
-tim.deposit(account: timAccount, amount: 50)
-tim.withdrawal(account: timAccount, amount: 40)
-tim.deposit(account: timAccount, amount: 50)
-tim.accountBalance(account: timAccount)
+tim.deposit(account: timAccount ?? <#default value#>, amount: 50)
+tim.withdrawal(account: timAccount ?? <#default value#>, amount: 40)
+tim.deposit(account: timAccount ?? <#default value#>, amount: 50)
+tim.accountBalance(account: timAccount ?? <#default value#>)
 
-tunji.deposit(account: tunjiAccount, amount: 60)
-tunji.withdrawal(account: tunjiAccount, amount: 10)
-tunji.accountBalance(account: tunjiAccount)
+tunji.deposit(account: tunjiAccount ?? <#default value#>, amount: 60)
+tunji.withdrawal(account: tunjiAccount ?? <#default value#>, amount: 10)
+tunji.accountBalance(account: tunjiAccount ?? <#default value#>)
 
 let remove = kunle.closeAccount(accountPassed: tim.account?[0] ?? <#default value#>)
 
