@@ -1,8 +1,8 @@
 import Foundation
 
-var accountId = 1
 class Account {
-    var id: Int
+    private static var idUpdater = 1
+    private(set) var id: Int
     var customerId: Int
     var accountBalanceInKobo: Int = 0
     var interestRate: Double = 0.0
@@ -11,8 +11,8 @@ class Account {
     //Initializers are called to create a new instance of a particular type.
     init(customerId: Int) {
         self.customerId = customerId
-        self.id = accountId
-        accountId = accountId + 1
+        self.id = Account.idUpdater
+        Account.idUpdater += 1
     }
     
     func deposit(amount: Int) -> Int {
@@ -108,74 +108,39 @@ class currentAccount: Account {
 
 */
 
-var seedId  = 1
 class Customer {
-    var _id: Int
-    var _name: String
-    var _address: String
-    var _phoneNumber: String
+    
+    private static var customerIdUpdater = 1
+    private(set) var id: Int
+    private(set) var name: String
+    private(set) var address: String
+    private(set) var phoneNumber: String
     var account: [Account]? = []
     
-    public var id: Int {
-        get {
-            return _id
-        }
-        set{
-            newValue
-        }
-    }
-    
-    public var name: String {
-        get {
-            return _name
-        }
-        set{
-            newValue
-        }
-    }
-    
-    public var phoneNumber: String {
-        get {
-            return _phoneNumber
-        }
-        set{
-            newValue
-        }
-    }
-    
-    public var address: String {
-        get {
-            return _address
-        }
-        set{
-            newValue
-        }
-    }
-    
     init(name: String, address: String, phoneNumber: String) {
-        self._id = seedId
-        self._name = name
-        self._address = address
-        self._phoneNumber = phoneNumber
-        seedId = seedId + 1
+        self.id = Customer.customerIdUpdater
+        self.name = name
+        self.address = address
+        self.phoneNumber = phoneNumber
+        Customer.customerIdUpdater += 1
     }
     
     func deposit(account: Account, amount: Int) -> Int {
         //ABSTRACTION
         //we are exposing deposit() method to the user to perform the calculations, but hiding the internal calculations.
-        let newBalance = account.deposit(amount: amount)
+        let newBalance = account.deposit(amount: amount) / 100
         return newBalance
     }
     
     func accountBalance(account: Account) -> Int {
        // print(account.accountBalanceInKobo)
-        return account.accountBalanceInKobo
+        return account.accountBalanceInKobo / 100
     }
     
     func withdrawal(account: Account, amount: Int) -> Int {
         //ABSTRACTION
         //we are exposing withdrawal() method to the user to perform the calculations, but hiding the internal calculations.
-        let newBalance = account.withdrawal(amount: amount)
+        let newBalance = account.withdrawal(amount: amount) / 100
         return newBalance
     }
     
@@ -199,12 +164,21 @@ class Customer {
     
     func closeAccount(accountPassed: Account) -> [Account]? {
         var i = 0
+//        if let count = account?.count {
+//            while i < count {
+//                       if account?[i].id == accountPassed.id {
+//                           account?.remove(at: i)
+//                       }
+//                       i = i + 1
+//                   }
+//        }
         while i < account?.count ?? <#default value#> {
             if account?[i].id == accountPassed.id {
                 account?.remove(at: i)
             }
             i = i + 1
         }
+        print("\(self.name) closed his account")
         return self.account
     }
 }
@@ -237,6 +211,11 @@ tunji.account?[0].id
 kunle.account?[0].id
 kunle.account?[1].id
 
+
+// The amount displayed at the sidebar is in Naira but my amount calculated was in kobo as Instructed
+//if let timAcc = timAccount {
+//    tim.deposit(account: timAcc, amount: 50)
+//}
 tim.deposit(account: timAccount ?? <#default value#>, amount: 50)
 tim.withdrawal(account: timAccount ?? <#default value#>, amount: 40)
 tim.deposit(account: timAccount ?? <#default value#>, amount: 50)
@@ -246,13 +225,4 @@ tunji.deposit(account: tunjiAccount ?? <#default value#>, amount: 60)
 tunji.withdrawal(account: tunjiAccount ?? <#default value#>, amount: 10)
 tunji.accountBalance(account: tunjiAccount ?? <#default value#>)
 
-let remove = kunle.closeAccount(accountPassed: tim.account?[0] ?? <#default value#>)
-
-
-
-
-//tim.closeAccount(accountPassed: tim.account[0]!)
-//tim.accountTotal()
-
-//tim.deposit(account: account1[0]!, amount: 500)
-//tim.withdrawal(account: account1[0]!, amount: 200)
+kunle.closeAccount(accountPassed: tim.account?[0] ?? <#default value#>)
